@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Baza uczniów
+{% endblock %}
+
+{% block content %}
+    <ul>
+        {% for child in children %}
+            <a href="{% url "child-detail" child.id %}">
+                <p>{{ child.last_name }} {{ child.first_name }}</p>
+            </a>
+        {% endfor %}
+    </ul>
+{% endblock %}

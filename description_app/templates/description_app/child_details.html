@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{ child.first_name }} {{ child.last_name }} - szczegóły dziecka
+{% endblock %}</title>
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static "description_app/child_details.css" %}">
+{% endblock %}
+
+{% block content %}
+    <div id="detail-header">
+        <h3>{{ child.first_name }} {{ child.last_name }} - szczegóły dziecka</h3>
+    </div>
+    <ul>
+        {% for child_skill in child_skills %}
+            <span>{{ child.first_name }} {{ child_skill.skill.response_text }}</span>
+        {% endfor %}
+    </ul>
+{% endblock %}
