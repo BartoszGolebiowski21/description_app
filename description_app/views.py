@@ -1,10 +1,30 @@
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
-from .models import Child, ResponseText
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .models import Child, ResponseText, Skill, ChildSkill
+from .forms import ChildForm
 
 
-def generate_description(request):
-    return render(request, "description_app/generate_description.html")
+# def generate_description(request):
+#     return render(request, "description_app/generate_description.html")
+
+
+class AddChildView(CreateView):
+    model = Child
+    form_class = ChildForm
+    template_name = "description_app/generate_description.html"
+    success_url = "all-children"
+
+    def form_valid(self, form):
+        child = form.save()
+
+        skills = Skill.objects.all()
+
+        for skill in skills:
+            grade = form.cleaned_data.get(f"skill_{skill.id}")
+            ChildSkill.objects.create(child=child, skill=skill, grade=grade)
+
+        return super(AddChildView, self).form_valid(form)
 
 
 class SingleChildView(DetailView):

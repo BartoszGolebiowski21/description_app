@@ -42,22 +42,18 @@ class Description(models.Model):
 
 
 class ChildSkill(models.Model):
-    # BEGINNER = '0'
-    # INTERMEDIATE = '1'
-    # ADVANCED = '2'
+    BEGINNER = 0
+    INTERMEDIATE = 1
+    ADVANCED = 2
 
-    # GRADE_CHOICES = [
-    #     (BEGINNER, '0'),
-    #     (INTERMEDIATE, '1'),
-    #     (ADVANCED, '2'),
-    # ]
-    
+    GRADE_CHOICES = [
+        (BEGINNER, 0),
+        (INTERMEDIATE, 1),
+        (ADVANCED, 2),
+    ]
+    grade = models.CharField(max_length=1,choices=GRADE_CHOICES, null=True)
     child = models.ForeignKey(Child, on_delete=models.SET_NULL, null=True)
     skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
-    # grade = models.CharField(max_length=1,choices=GRADE_CHOICES, null=True)
-    grade = models.IntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(2)], null=True)
-
 
     class Meta:
         unique_together = (('child', 'skill'),)
@@ -67,9 +63,17 @@ class ChildSkill(models.Model):
 
 
 class ResponseText(models.Model):
+    BEGINNER = 0
+    INTERMEDIATE = 1
+    ADVANCED = 2
+
+    GRADE_CHOICES = [
+        (BEGINNER, 0),
+        (INTERMEDIATE, 1),
+        (ADVANCED, 2),
+    ]
+    grade = models.CharField(max_length=1,choices=GRADE_CHOICES, null=True)
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE, null=True)
-    grade = models.IntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(2)], null=True)
     response_text = models.CharField(max_length=200, null=True)
 
     def __str__(self):
