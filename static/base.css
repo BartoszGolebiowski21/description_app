@@ -54,6 +54,7 @@ a:hover {
 }
 
 ul {
-    margin-inline-end: 20px;
+    margin-inline-end: 40px;
     font-size: 18px;
+    text-align: justify;
 }

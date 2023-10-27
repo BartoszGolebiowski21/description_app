@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-{{ child.first_name }} {{ child.last_name }} - szczegóły dziecka
+{{ child.first_name }} {{ child.last_name }} - szczegóły ucznia
 {% endblock %}</title>
 
 {% block css_files %}
@@ -11,11 +11,17 @@
 
 {% block content %}
     <div id="detail-header">
-        <h3>{{ child.first_name }} {{ child.last_name }} - szczegóły dziecka</h3>
+        <h3>{{ child.first_name }} {{ child.last_name }} - szczegóły ucznia</h3>
     </div>
     <ul>
+        <p>
         {% for child_skill in child_skills %}
-            <span>{{ child.first_name }} {{ child_skill.skill.response_text }}</span>
+            {% for response in responses %}
+                {% if child_skill.grade == response.grade and child_skill.skill == response.skill %}
+                    <span>{{ child.first_name }} {{ response.response_text }}</span>
+                {% endif %}
+            {% endfor %}
         {% endfor %}
+        </p>
     </ul>
 {% endblock %}
