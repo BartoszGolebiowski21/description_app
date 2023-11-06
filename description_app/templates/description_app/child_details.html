@@ -15,13 +15,14 @@
     </div>
     <ul>
         <p>
-        {% for child_skill in child_skills %}
+            <span>{{ child.description }}</span>
+        {% comment %} {% for child_skill in child_skills %}
             {% for response in responses %}
                 {% if child_skill.grade == response.grade and child_skill.skill == response.skill %}
                     <span>{{ child.first_name }} {{ response.response_text }}</span>
                 {% endif %}
             {% endfor %}
-        {% endfor %}
+        {% endfor %} {% endcomment %}
         </p>
     </ul>
 {% endblock %}

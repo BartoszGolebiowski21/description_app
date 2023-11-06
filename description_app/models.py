@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Skill(models.Model):
@@ -25,20 +24,13 @@ class Child(models.Model):
         choices=GENDER_CHOICES
     )
     skill = models.ManyToManyField(Skill, through='ChildSkill')
+    description = models.TextField(max_length=5000, null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
     
     class Meta:
         verbose_name_plural = "Children"
-
-
-class Description(models.Model):
-    text = models.TextField(max_length=500)
-    child = models.OneToOneField(Child, on_delete=models.CASCADE, null=True)
-
-    def __str__(self):
-        return f"{self.child}'s description"
 
 
 class ChildSkill(models.Model):
@@ -52,7 +44,7 @@ class ChildSkill(models.Model):
         (ADVANCED, 2),
     ]
     grade = models.CharField(max_length=1,choices=GRADE_CHOICES, null=True)
-    child = models.ForeignKey(Child, on_delete=models.SET_NULL, null=True)
+    child = models.ForeignKey(Child, on_delete=models.CASCADE, null=True)
     skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
 
     class Meta:
