@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Edytuj ucznia
+{% endblock %}</title>
+
+{% block css_files %}
+    <link rel="stylesheet" href="">
+{% endblock %}
+
+{% block content %}
+    <p>Czy na pewno chcesz usunąć ucznia 
+        {{ child.first_name }} {{ child.last_name }}?</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button class="">Tak, usuń</button>
+    </form>
+    <a href="{% url "child-detail" child.id %}">
+        <button class="">Nie usuwaj</button>
+    </a>
+{% endblock %}

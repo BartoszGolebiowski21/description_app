@@ -16,13 +16,14 @@
     <ul>
         <p>
             <span>{{ child.description }}</span>
-        {% comment %} {% for child_skill in child_skills %}
-            {% for response in responses %}
-                {% if child_skill.grade == response.grade and child_skill.skill == response.skill %}
-                    <span>{{ child.first_name }} {{ response.response_text }}</span>
-                {% endif %}
-            {% endfor %}
-        {% endfor %} {% endcomment %}
+        </p>
+        <p>
+            <a href="{% url "edit-child" child.id %}">
+                <button class="">Edytuj</button>
+            </a>
+            <a href="{% url "delete-child" child.id %}">
+                <button class="">Usuń</button>
+            </a>
         </p>
     </ul>
 {% endblock %}

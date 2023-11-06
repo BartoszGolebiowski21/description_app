@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Edytuj ucznia
+{% endblock %}</title>
+
+{% block css_files %}
+    <link rel="stylesheet" href="">
+{% endblock %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="word-input">
+                {{ field.label_tag }}
+                {{ field }}
+            </div>
+        {% endfor %}
+        <button type="submit">Zapisz</button>
+    </form>
+{% endblock %}

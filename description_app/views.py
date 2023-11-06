@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse, reverse_lazy
+
 from .models import Child, ResponseText, Skill, ChildSkill
 from .forms import ChildForm
+
 
 
 # def generate_description(request):
@@ -59,3 +62,41 @@ class AllChildrenView(ListView):
     model = Child
     ordering = ["last_name"]
     context_object_name = "children"
+
+
+class EditChildView(UpdateView):
+    model = Child
+    form_class = ChildForm
+    template_name = "description_app/edit_child.html"
+
+    def form_valid(self, form):
+        child = form.save()
+        skills = Skill.objects.all()
+        description = ""
+
+        for skill in skills:
+            grade = form.cleaned_data.get(f"skill_{skill.id}")
+            child_skill, created = ChildSkill.objects.get_or_create(child=child, skill=skill)
+            child_skill.grade = grade
+            child_skill.save()
+
+            response = ResponseText.objects.filter(skill=skill, grade=grade).first()
+
+            if response:
+                description += f"{child.first_name} {response.response_text} "
+
+        child.description = description
+        child.save()
+
+        return super(EditChildView, self).form_valid(form)
+
+
+    def get_success_url(self):
+        return reverse("child-detail", args=[self.get_object().id])
+    
+
+class DeleteChildView(DeleteView):
+    model = Child
+    template_name = "description_app/delete_child.html"
+    success_url = reverse_lazy("all-children")
+
