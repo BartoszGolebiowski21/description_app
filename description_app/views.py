@@ -7,11 +7,6 @@ from .models import Child, ResponseText, Skill, ChildSkill
 from .forms import ChildForm
 
 
-
-# def generate_description(request):
-#     return render(request, "description_app/generate_description.html")
-
-
 class AddChildView(CreateView):
     model = Child
     form_class = ChildForm
@@ -37,18 +32,6 @@ class AddChildView(CreateView):
         child.save()
 
         return super(AddChildView, self).form_valid(form)
-    
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     child_skills = self.object.childskill_set.all()
-    #     responses = ResponseText.objects.all()
-
-    #     for child_skill in child_skills:
-    #         for response in responses:
-    #             if child_skill.grade == response.grade and child_skill.skill == response.skill:
-    #                 child.description += f"{child.first_name response.response_text
-
-    #     return context
 
 
 class SingleChildView(DetailView):
@@ -89,6 +72,15 @@ class EditChildView(UpdateView):
         child.save()
 
         return super(EditChildView, self).form_valid(form)
+    
+
+    def get_initial(self):
+        initial = super().get_initial()
+        child = self.get_object()
+        initial_skills = child.skill.all()
+        for skill in initial_skills:
+            initial[f"skill_{skill.id}"] = skill.childskill_set.get(child=child).grade
+        return initial
 
 
     def get_success_url(self):
