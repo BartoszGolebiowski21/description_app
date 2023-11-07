@@ -5,6 +5,7 @@ from django.urls import reverse, reverse_lazy
 
 from .models import Child, ResponseText, Skill, ChildSkill
 from .forms import ChildForm
+from .utils import generate_sentence
 
 
 class AddChildView(CreateView):
@@ -18,15 +19,19 @@ class AddChildView(CreateView):
         child = form.save()
         skills = Skill.objects.all()
         description = ""
+        i = 0
 
         for skill in skills:
+            i += 1
             grade = form.cleaned_data.get(f"skill_{skill.id}")
             ChildSkill.objects.create(child=child, skill=skill, grade=grade)
 
             response = ResponseText.objects.get(skill=skill, grade=grade)
 
             if response:
-                description += f"{child.short_name} {response.response_text} "
+                sentence = generate_sentence(i, child.short_name, child.gender,
+                                             response.response_text)
+                description += sentence
 
         child.description = description
         child.save()
@@ -56,8 +61,10 @@ class EditChildView(UpdateView):
         child = form.save()
         skills = Skill.objects.all()
         description = ""
+        i = 0
 
         for skill in skills:
+            i += 1
             grade = form.cleaned_data.get(f"skill_{skill.id}")
             child_skill, created = ChildSkill.objects.get_or_create(child=child, skill=skill)
             child_skill.grade = grade
@@ -66,7 +73,9 @@ class EditChildView(UpdateView):
             response = ResponseText.objects.get(skill=skill, grade=grade)
 
             if response:
-                description += f"{child.short_name} {response.response_text} "
+                sentence = generate_sentence(i, child.short_name, child.gender, 
+                                             response.response_text)
+                description += sentence
 
         child.description = description
         child.save()
