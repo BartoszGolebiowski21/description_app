@@ -23,10 +23,10 @@ class AddChildView(CreateView):
             grade = form.cleaned_data.get(f"skill_{skill.id}")
             ChildSkill.objects.create(child=child, skill=skill, grade=grade)
 
-            response = ResponseText.objects.filter(skill=skill, grade=grade).first()
+            response = ResponseText.objects.get(skill=skill, grade=grade)
 
             if response:
-                description += f"{child.first_name} {response.response_text} "
+                description += f"{child.short_name} {response.response_text} "
 
         child.description = description
         child.save()
@@ -63,10 +63,10 @@ class EditChildView(UpdateView):
             child_skill.grade = grade
             child_skill.save()
 
-            response = ResponseText.objects.filter(skill=skill, grade=grade).first()
+            response = ResponseText.objects.get(skill=skill, grade=grade)
 
             if response:
-                description += f"{child.first_name} {response.response_text} "
+                description += f"{child.short_name} {response.response_text} "
 
         child.description = description
         child.save()

@@ -18,10 +18,11 @@ class ChildForm(forms.ModelForm):
 
     class Meta:
         model = Child
-        fields = ["first_name", "last_name", "gender",]
+        fields = ["first_name", "last_name", "short_name", "gender",]
         labels = {
             "first_name": "Imię",
             "last_name": "Nazwisko",
+            "short_name": "Zdrobnienie imienia",
         }
 
     def __init__(self, *args, **kwargs):

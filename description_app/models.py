@@ -19,6 +19,7 @@ class Child(models.Model):
     ]
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
+    short_name = models.CharField(max_length=30, null=True)
     gender = models.CharField(
         max_length=15,
         choices=GENDER_CHOICES
@@ -34,16 +35,13 @@ class Child(models.Model):
 
 
 class ChildSkill(models.Model):
-    BEGINNER = 0
-    INTERMEDIATE = 1
-    ADVANCED = 2
 
     GRADE_CHOICES = [
-        (BEGINNER, 0),
-        (INTERMEDIATE, 1),
-        (ADVANCED, 2),
+        (0, "0"),
+        (1, "1"),
+        (2, "2"),
     ]
-    grade = models.CharField(max_length=1,choices=GRADE_CHOICES, null=True)
+    grade = models.IntegerField(max_length=1, choices=GRADE_CHOICES, null=True)
     child = models.ForeignKey(Child, on_delete=models.CASCADE, null=True)
     skill = models.ForeignKey(Skill, on_delete=models.SET_NULL, null=True)
 
@@ -55,17 +53,14 @@ class ChildSkill(models.Model):
 
 
 class ResponseText(models.Model):
-    BEGINNER = 0
-    INTERMEDIATE = 1
-    ADVANCED = 2
 
     GRADE_CHOICES = [
-        (BEGINNER, 0),
-        (INTERMEDIATE, 1),
-        (ADVANCED, 2),
+        (0, "0"),
+        (1, "1"),
+        (2, "2"),
     ]
-    grade = models.CharField(max_length=1,choices=GRADE_CHOICES, null=True)
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, null=True)
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, null=True)    
+    grade = models.IntegerField(max_length=1, choices=GRADE_CHOICES, null=True)
     response_text = models.CharField(max_length=200, null=True)
 
     def __str__(self):
